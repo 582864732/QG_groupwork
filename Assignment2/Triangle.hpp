@@ -4,7 +4,7 @@
 
 #ifndef RASTERIZER_TRIANGLE_H
 #define RASTERIZER_TRIANGLE_H
-
+#include<Eigen/Core>
 //#include <eigen3/Eigen/Eigen>
 
 

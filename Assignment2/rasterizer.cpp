@@ -40,9 +40,48 @@ auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
 }
 
 
-static bool insideTriangle(int x, int y, const Vector3f* _v)
+Vector3f cross(Vector3f a, Vector3f b)
+{
+    Vector3f r;
+    r << a.y() * b.z() - a.z() * b.y(), a.z()* b.x() - a.x() * b.z(), a.x()* b.y() - a.y() * b.x();
+    return r;
+}
+
+static bool insideTriangle(int x, int y,const Vector3f* _v)
 {   
     // TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
+    Vector3f v1, v2, v3;
+    Vector3f vp1, vp2, vp3;
+    //Vector3f vpp1, vpp2, vpp3;
+    v1 = _v[1] - _v[0];
+    v2 = _v[2] - _v[1];
+    v3 = _v[0] - _v[2];
+    v1.z() = 0;
+    v2.z() = 0;
+    v3.z() = 0;
+    //vp1 << v1.x(), v1.y(),0;
+    //vp2 << v2.x(), v2.y(),0;
+    //vp3 << v3.x(), v3.y(),0;
+    float a, b, c;
+    //vp1 << x - _v[0].x(), y - _v[0].y(),z-_v[0].z();
+    //vp2 << x - _v[1].x(), y - _v[1].y(), z - _v[1].z();
+    //vp3 << x - _v[2].x(), y - _v[2].y(), z - _v[2].z();
+    vp1 << x - _v[0].x(), y - _v[0].y(),0;
+    vp2 << x - _v[1].x(), y - _v[1].y(), 0;
+    vp3 << x - _v[2].x(), y - _v[2].y(), 0;
+    //v1 = v1.cross(vp1);
+    //v2 = v2.cross(vp2);
+    //v3 = v3.cross(vp3);
+    //std::cout << vp1 << std::endl;
+    v1 = cross(v1, vp1);
+    v2 = cross(v2, vp2);
+    v3 = cross(v3, vp3);
+    //std::cout<<v1<<std::endl;
+    a = v1.dot(v2);
+    b = v2.dot(v3);
+    c = v3.dot(v1);
+    if (a * b > 0 && a * c > 0 && b * c > 0)return true;
+    return false;
 }
 
 static std::tuple<float, float, float> computeBarycentric2D(float x, float y, const Vector3f* v)
@@ -102,18 +141,49 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
     }
 }
 
+int min_(int x, int y, int z)
+{
+    int a = x < y ? x : y;
+    int b = a < z ? a : z;
+    return b;
+}
+
+int max_(int x, int y, int z)
+{
+    int a = x > y ? x : y;
+    return a > z ? a : z;
+}
+
 //Screen space rasterization
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     auto v = t.toVector4();
-    
+    float alpha, beta, gamma;
     // TODO : Find out the bounding box of current triangle.
     // iterate through the pixel and find if the current pixel is inside the triangle
-
     // If so, use the following code to get the interpolated z value.
-    //auto[alpha, beta, gamma] = computeBarycentric2D(x, y, t.v);
-    //float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
-    //float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
-    //z_interpolated *= w_reciprocal;
+    int small_x, large_x, small_y, large_y;
+    small_x = min_(t.v[0].x(), t.v[1].x(), t.v[2].x());
+    large_x = max_(t.v[0].x(), t.v[1].x(), t.v[2].x());
+    small_y = min_(t.v[0].y(), t.v[1].y(), t.v[2].y());
+    large_y = max_(t.v[0].y(), t.v[1].y(), t.v[2].y());
+    for (int x = small_x; x < large_x; x++)
+    {
+        for (int y = small_y; y < large_y; y++)
+        {
+            std::tuple<float, float, float> tp = computeBarycentric2D(x, y, t.v);
+            std::tie(alpha, beta, gamma) = tp;
+            float w_reciprocal = 1.0 / (alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
+            float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
+            z_interpolated *= w_reciprocal;
+            if (insideTriangle(x, y, t.v))
+            {
+                //std::cout << 1<<std::endl;
+                Vector3f point;
+                point << x, y, z_interpolated;
+                set_pixel(point,t.getColor());
+            }
+        }
+    }
 
     // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
 }
@@ -161,6 +231,7 @@ void rst::rasterizer::set_pixel(const Eigen::Vector3f& point, const Eigen::Vecto
     //old index: auto ind = point.y() + point.x() * width;
     auto ind = (height-1-point.y())*width + point.x();
     frame_buf[ind] = color;
+    //std::cout << 1<<std::endl;
 
 }
 

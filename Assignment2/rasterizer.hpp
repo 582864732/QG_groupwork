@@ -8,6 +8,8 @@
 #include <algorithm>
 #include "global.hpp"
 #include "Triangle.hpp"
+#include<map>
+#include<vector>
 using namespace Eigen;
 
 namespace rst

@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>D:\games101\GAMES101\GAMES101_HW\include;D:\games101\GAMES101\GAMES101_HW\include\opencv2;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\games101\GAMES101\GAMES101_HW\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\include;..\..\include\opencv2;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

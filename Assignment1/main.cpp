@@ -118,6 +118,12 @@ int main(int argc, const char** argv)
         else if (key == 'd') {
             angle -= 10;
         }
+        else if (key == 'w'){
+            eye_pos[2] = eye_pos[2]>2?eye_pos[2]-1:eye_pos[2];
+        }
+        else if (key == 's') {
+            eye_pos[2]++;
+        }
     }
 
     return 0;
