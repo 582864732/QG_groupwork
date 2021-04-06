@@ -162,7 +162,7 @@
     <None Include="HLSL\Triangle_VS.hlsl">
       <FileType>Document</FileType>
     </None>
-    <None Include="实现方法.md" />
+    <None Include="实现方法.pdf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\Triangle.hlsli" />
