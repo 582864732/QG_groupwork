@@ -60,5 +60,6 @@
     <None Include="HLSL\Triangle_VS.hlsl">
       <Filter>着色器</Filter>
     </None>
+    <None Include="实现方法.pdf" />
   </ItemGroup>
 </Project>
