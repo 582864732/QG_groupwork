@@ -38,7 +38,53 @@ void GameApp::OnResize()
 
 void GameApp::UpdateScene(float dt)
 {
+	VertexPosColor vertices1[6] =
+	{
+		{XMFLOAT3(0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(0.5f,0.0f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(-0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,0.0f,1.0f)},
+		{XMFLOAT3(-0.5f,0.0f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,0.0f)},
+		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,0.0f)},
+	};
+	int i = rand() % 4;
+	int v[3];
+	switch (i)
+	{
+	case 0: v[0] = 0; v[1] = 1; v[2] = 2; break;
+	case 1: v[0] = 5; v[1] = 0; v[2] = 2; break;
+	case 2: v[0] = 5; v[1] = 2; v[2] = 3; break;
+	case 3: v[0] = 5; v[1] = 3; v[2] = 4; break;
+	}
+	VertexPosColor vertices[3] = { vertices1[v[0]],vertices1[v[1]],vertices1[v[2]] };
+	D3D11_BUFFER_DESC vbd;
+	ZeroMemory(&vbd, sizeof(vbd));
+	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+	vbd.ByteWidth = sizeof vertices;
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = 0;
+	// 新建顶点缓冲区
+	D3D11_SUBRESOURCE_DATA InitData;
+	ZeroMemory(&InitData, sizeof(InitData));
+	InitData.pSysMem = vertices;
+	HR(m_pd3dDevice->CreateBuffer(&vbd, &InitData, m_pVertexBuffer.GetAddressOf()));
 
+
+	// ******************
+	// 给渲染管线各个阶段绑定好所需资源
+	//
+
+	// 输入装配阶段的顶点缓冲区设置
+	UINT stride = sizeof(VertexPosColor);	// 跨越字节数
+	UINT offset = 0;						// 起始偏移量
+
+	m_pd3dImmediateContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
+	// 设置图元类型，设定输入布局
+	m_pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_pd3dImmediateContext->IASetInputLayout(m_pVertexLayout.Get());
+	// 将着色器绑定到渲染管线
+	m_pd3dImmediateContext->VSSetShader(m_pVertexShader.Get(), nullptr, 0);
+	m_pd3dImmediateContext->PSSetShader(m_pPixelShader.Get(), nullptr, 0);
 }
 
 void GameApp::DrawScene()
