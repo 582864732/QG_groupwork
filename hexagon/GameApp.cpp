@@ -51,7 +51,7 @@ void GameApp::DrawScene()
 	m_pd3dImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	// 绘制三角形
-	m_pd3dImmediateContext->Draw(3, 0);
+	m_pd3dImmediateContext->Draw(9, 0);
 	HR(m_pSwapChain->Present(0, 0));
 }
 
@@ -87,25 +87,14 @@ bool GameApp::InitResource()
 	{
 		{XMFLOAT3(0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
 		{XMFLOAT3(0.5f,0.0f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-	};
-	VertexPosColor vertices2[] =
-	{
+		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(0.0f,1.0f,1.0f,1.0f)},//
+		{XMFLOAT3(-0.25f,-0.5f,0.5f),XMFLOAT4(0.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(-0.5f,0.0f,0.5f),XMFLOAT4(0.0f,1.0f,1.0f,1.0f)},//
 		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(0.5f,0.0f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-	};
-	VertexPosColor vertices3[] =
-	{
-		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(-0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-	};
-	VertexPosColor vertices4[] =
-	{
-		{XMFLOAT3(-0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(-0.5f,0.0f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(0.25f,0.5f,0.5f),XMFLOAT4(1.0f,0.0f,1.0f,1.0f)},//
+		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,0.0f,1.0f,1.0f)},
+		{XMFLOAT3(-0.5f,0.0f,0.5f),XMFLOAT4(1.0f,0.0f,1.0f,1.0f)}
+
 	};
 	// 设置顶点缓冲区描述
 	D3D11_BUFFER_DESC vbd;
@@ -119,39 +108,6 @@ bool GameApp::InitResource()
 	ZeroMemory(&InitData, sizeof(InitData));
 	InitData.pSysMem = vertices1;
 	HR(m_pd3dDevice->CreateBuffer(&vbd, &InitData, m_pVertexBuffer.GetAddressOf()));
-	//verteices2
-	D3D11_BUFFER_DESC vbd1;
-	ZeroMemory(&vbd1, sizeof(vbd1));
-	vbd1.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd1.ByteWidth = sizeof vertices1;
-	vbd1.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd1.CPUAccessFlags = 0;
-	D3D11_SUBRESOURCE_DATA InitData2;
-	ZeroMemory(&InitData2, sizeof(InitData2));
-	InitData2.pSysMem = vertices2;
-	HR(m_pd3dDevice->CreateBuffer(&vbd1, &InitData2, m_pVertexBuffer.GetAddressOf()));
-	//vertices3
-	D3D11_BUFFER_DESC vbd3;
-	ZeroMemory(&vbd3, sizeof(vbd3));
-	vbd3.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd3.ByteWidth = sizeof vertices1;
-	vbd3.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd3.CPUAccessFlags = 0;
-	D3D11_SUBRESOURCE_DATA InitData3;
-	ZeroMemory(&InitData3, sizeof(InitData3));
-	InitData3.pSysMem = vertices3;
-	HR(m_pd3dDevice->CreateBuffer(&vbd3, &InitData3, m_pVertexBuffer.GetAddressOf()));
-	//vertices4
-	D3D11_BUFFER_DESC vbd4;
-	ZeroMemory(&vbd4, sizeof(vbd4));
-	vbd4.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd4.ByteWidth = sizeof vertices1;
-	vbd4.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd4.CPUAccessFlags = 0;
-	D3D11_SUBRESOURCE_DATA InitData4;
-	ZeroMemory(&InitData4, sizeof(InitData4));
-	InitData4.pSysMem = vertices4;
-	HR(m_pd3dDevice->CreateBuffer(&vbd4, &InitData4, m_pVertexBuffer.GetAddressOf()));
 
 
 	// ******************
@@ -164,7 +120,7 @@ bool GameApp::InitResource()
 
 	m_pd3dImmediateContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
 	// 设置图元类型，设定输入布局
-	m_pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	m_pd3dImmediateContext->IASetInputLayout(m_pVertexLayout.Get());
 	// 将着色器绑定到渲染管线
 	m_pd3dImmediateContext->VSSetShader(m_pVertexShader.Get(), nullptr, 0);
