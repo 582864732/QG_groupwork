@@ -82,17 +82,17 @@ bool GameApp::InitResource()
 		{XMFLOAT3(0.5f,0.0f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
 		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
 
-		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(0.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(0.25f,0.5f,0.5f),XMFLOAT4(0.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(0.0f,1.0f,1.0f,1.0f)},
 
-		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(-0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,0.0f,1.0f,1.0f)},
+		{XMFLOAT3(0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,0.0f,1.0f,1.0f)},
+		{XMFLOAT3(-0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,0.0f,1.0f,1.0f)},
 
-		{XMFLOAT3(-0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(-0.5f,0.0f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
-		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
+		{XMFLOAT3(-0.25f,-0.5f,0.5f),XMFLOAT4(1.0f,1.0f,0.0f,1.0f)},
+		{XMFLOAT3(-0.5f,0.0f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,0.0f)},
+		{XMFLOAT3(-0.25f,0.5f,0.5f),XMFLOAT4(1.0f,1.0f,1.0f,0.0f)},
 	};
 
 	// 设置顶点缓冲区描述
