@@ -81,5 +81,6 @@
     <None Include="HLSL\Cube.hlsli">
       <Filter>着色器</Filter>
     </None>
+    <None Include="五角星实现.md" />
   </ItemGroup>
 </Project>
